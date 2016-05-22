@@ -48,15 +48,18 @@ namespace Mandelbrot
             Bitmap surface = new Bitmap(400, 400);
             Graphics g = Graphics.FromImage(surface);
             Brush brush = (Brush)Brushes.Black;
+            double zoomLevel = 80;
+            double xPan = 0.25;
+            double yPan = 0;
 
-            for (int y = 0; y < 400; y++)
+            for (double y = (-2.0 / zoomLevel) + yPan; y < (2.0 / zoomLevel) + yPan; y += 0.01 / zoomLevel)
             {
-                for (int x = 0; x < 400; x++)
+                for (double x = (-2.0 / zoomLevel) + xPan; x < (2.0 / zoomLevel) + xPan; x += 0.01 / zoomLevel)
                 {
-                    check = new Complex((Convert.ToDouble(x) / 100 - 2), (Convert.ToDouble(y) / 100 - 2));
+                    check = new Complex(x, y);
                     if (IsBound(check, iterations))
                     {
-                        g.FillRectangle(brush, x, y, 1, 1);
+                        g.FillRectangle(brush, Convert.ToSingle((x * (100 * zoomLevel)) + 200 - (100 * xPan * zoomLevel)), Convert.ToSingle((y * (100 * zoomLevel)) + 200 - (100 * yPan * zoomLevel)), 1, 1);
                         //Console.WriteLine(check.ToString() + " bounds");
                     }
                     else
@@ -75,35 +78,6 @@ namespace Mandelbrot
         {
             AllocConsole();
 
-
-            /*
-            Complex check = new Complex(0.0, 0.0);
-            Bitmap surface = new Bitmap(400, 400);
-            Graphics g = Graphics.FromImage(surface);
-            Brush brush = (Brush)Brushes.Black;
-            int iterations = 100;
-
-            for (int y = 0; y < 400; y++)
-            {
-                for (int x = 0; x < 400; x++)
-                {
-                    check = new Complex((Convert.ToDouble(x) / 100 - 2), (Convert.ToDouble(y) / 100 - 2));
-                    if (IsBound(check, iterations))
-                    {
-                        g.FillRectangle(brush, x, y, 1, 1);
-                        //Console.WriteLine(check.ToString() + " bounds");
-                    }
-                    else
-                    {
-                        //Console.WriteLine(check.ToString() + " doesn't bound");
-                    }
-                }
-            }
-            
-
-
-            pictureBox1.Image = surface;
-            */
             Render(int.Parse(Iterations.Text));
         }
 
